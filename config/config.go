@@ -23,8 +23,15 @@ var DefaultColors = Colors{
 	Base0D: "#83A598",
 }
 
+type Size struct {
+	Width  int
+	Height int
+}
+
 type ConfigS struct {
-	Colors Colors
+	Colors      Colors
+	Size        Size
+	DeviceIndex int // index of the network device according to Network Manager
 }
 
 var Config ConfigS
@@ -43,9 +50,11 @@ func Init() {
 		utils.CheckError(err)
 		defer fh.Close()
 
+		defaultConfig := ConfigS{Colors: DefaultColors, Size: Size{300, 600}, DeviceIndex: 1}
+
 		encoder := yaml.NewEncoder(fh)
-		encoder.Encode(&ConfigS{Colors: DefaultColors})
-		Config = ConfigS{Colors: DefaultColors}
+		encoder.Encode(&defaultConfig)
+		Config = defaultConfig
 	} else {
 		// Load the existing file.
 		fh, err := os.Open(configFile)

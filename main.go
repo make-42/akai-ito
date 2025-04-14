@@ -22,7 +22,7 @@ func main() {
 	a := app.NewWithID("akai-ito")
 	a.Settings().SetTheme(theme.AkaiItoTheme{})
 	w := a.NewWindow("akai-ito")
-	w.Resize(fyne.NewSize(400, 600))
+	w.Resize(fyne.NewSize(float32(config.Config.Size.Width), float32(config.Config.Size.Height)))
 
 	// Create new instance of gonetworkmanager
 	nm, err := gonetworkmanager.NewNetworkManager()
@@ -106,7 +106,7 @@ func main() {
 		fmt.Println("Selected inactive connection:", selectedConnection)
 		devices, err := nm.GetDevices()
 		utils.CheckError(err)
-		nm.ActivateConnection(connectionMap[selectedConnection], devices[1], nil)
+		nm.ActivateConnection(connectionMap[selectedConnection], devices[config.Config.DeviceIndex], nil)
 		w.Close()
 	}
 
